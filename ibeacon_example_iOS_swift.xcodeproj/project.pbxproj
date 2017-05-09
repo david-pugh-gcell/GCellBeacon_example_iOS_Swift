@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4F3E824B1EC1FA0100DF72D7 /* ibeacon_example_iOS_swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ibeacon_example_iOS_swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F3E824B1EC1FA0100DF72D7 /* GCell_ibeacon_example_iOS_swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GCell_ibeacon_example_iOS_swift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F3E824E1EC1FA0100DF72D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F3E82501EC1FA0100DF72D7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4F3E82531EC1FA0100DF72D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -50,7 +50,7 @@
 		4F3E824C1EC1FA0100DF72D7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4F3E824B1EC1FA0100DF72D7 /* ibeacon_example_iOS_swift.app */,
+				4F3E824B1EC1FA0100DF72D7 /* GCell_ibeacon_example_iOS_swift.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -79,9 +79,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4F3E824A1EC1FA0100DF72D7 /* ibeacon_example_iOS_swift */ = {
+		4F3E824A1EC1FA0100DF72D7 /* GCell_ibeacon_example_iOS_swift */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4F3E825D1EC1FA0100DF72D7 /* Build configuration list for PBXNativeTarget "ibeacon_example_iOS_swift" */;
+			buildConfigurationList = 4F3E825D1EC1FA0100DF72D7 /* Build configuration list for PBXNativeTarget "GCell_ibeacon_example_iOS_swift" */;
 			buildPhases = (
 				4F3E82471EC1FA0100DF72D7 /* Sources */,
 				4F3E82481EC1FA0100DF72D7 /* Frameworks */,
@@ -91,9 +91,9 @@
 			);
 			dependencies = (
 			);
-			name = ibeacon_example_iOS_swift;
+			name = GCell_ibeacon_example_iOS_swift;
 			productName = ibeacon_example_iOS_swift;
-			productReference = 4F3E824B1EC1FA0100DF72D7 /* ibeacon_example_iOS_swift.app */;
+			productReference = 4F3E824B1EC1FA0100DF72D7 /* GCell_ibeacon_example_iOS_swift.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -126,7 +126,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4F3E824A1EC1FA0100DF72D7 /* ibeacon_example_iOS_swift */,
+				4F3E824A1EC1FA0100DF72D7 /* GCell_ibeacon_example_iOS_swift */,
 			);
 		};
 /* End PBXProject section */
@@ -311,13 +311,14 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4F3E825D1EC1FA0100DF72D7 /* Build configuration list for PBXNativeTarget "ibeacon_example_iOS_swift" */ = {
+		4F3E825D1EC1FA0100DF72D7 /* Build configuration list for PBXNativeTarget "GCell_ibeacon_example_iOS_swift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4F3E825E1EC1FA0100DF72D7 /* Debug */,
 				4F3E825F1EC1FA0100DF72D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4F3E824A1EC1FA0100DF72D7"
-               BuildableName = "ibeacon_example_iOS_swift.app"
-               BlueprintName = "ibeacon_example_iOS_swift"
+               BuildableName = "GCell_ibeacon_example_iOS_swift.app"
+               BlueprintName = "GCell_ibeacon_example_iOS_swift"
                ReferencedContainer = "container:ibeacon_example_iOS_swift.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4F3E824A1EC1FA0100DF72D7"
-            BuildableName = "ibeacon_example_iOS_swift.app"
-            BlueprintName = "ibeacon_example_iOS_swift"
+            BuildableName = "GCell_ibeacon_example_iOS_swift.app"
+            BlueprintName = "GCell_ibeacon_example_iOS_swift"
             ReferencedContainer = "container:ibeacon_example_iOS_swift.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -56,8 +56,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4F3E824A1EC1FA0100DF72D7"
-            BuildableName = "ibeacon_example_iOS_swift.app"
-            BlueprintName = "ibeacon_example_iOS_swift"
+            BuildableName = "GCell_ibeacon_example_iOS_swift.app"
+            BlueprintName = "GCell_ibeacon_example_iOS_swift"
             ReferencedContainer = "container:ibeacon_example_iOS_swift.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -75,8 +75,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4F3E824A1EC1FA0100DF72D7"
-            BuildableName = "ibeacon_example_iOS_swift.app"
-            BlueprintName = "ibeacon_example_iOS_swift"
+            BuildableName = "GCell_ibeacon_example_iOS_swift.app"
+            BlueprintName = "GCell_ibeacon_example_iOS_swift"
             ReferencedContainer = "container:ibeacon_example_iOS_swift.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
