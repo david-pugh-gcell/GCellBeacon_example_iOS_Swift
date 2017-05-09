@@ -62,7 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        //set appdelegate as delegate to recieve CoreLocation responses
+        //assign the AppDelegate to the delegate property. The appDelegate has to conform to the CLLocationManagerDelegate protocol to recieve location based updates.
         locationManager.delegate = self
         
         
@@ -162,21 +162,17 @@ extension AppDelegate{
         
     }
     
-    
-    
+
     
     
     //MARK: CoreLocation locationManager delegate calls
-    /*
-     CoreLocation locationManager didRangeBeacons callback
-     
-     */
-    
+    //CoreLocation locationManager didRangeBeacons callback
     open func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
-        //Filter beacon list
-        let beacons = beacons.filter{ $0.proximity != CLProximity.unknown }
         
-        //sort beacons by RSSI
+        //Optionally Filter beacon list - this will remove any beacons with an 'unknown' prximity - usually ones iOS hasnt see for a few seconds
+        //let beacons = beacons.filter{ $0.proximity != CLProximity.unknown }
+        
+        //Optionally sort beacons by RSSI
         //let beacons = beacons.sorted(by: {$0.rssi > $1.rssi})
         if debug{print("\(beacons.count) Beacons(s) ranged")}
         if(beacons.count > 0) {
@@ -189,27 +185,21 @@ extension AppDelegate{
     
     
     //CoreLocation locationManager didDetermineState callback
-    
     open func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
         if debug{print("Determined State of region \(region)")}
         // the app has determined if it is within a region on start up - if it is then start to range
         if state == CLRegionState.inside{
             if debug{print("Inside region")}
-            
-            locationManager.startRangingBeacons(in: region as! CLBeaconRegion )
+                locationManager.startRangingBeacons(in: region as! CLBeaconRegion )
  
-            
         }else{
             if debug{print("Outside region")}
             locationManager.stopRangingBeacons(in: region as! CLBeaconRegion)
-            
         }
         
     }
     
     //CoreLocation locationManager didStartMonitoringForRegion callback
-    
-    
     open func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         if debug{print("Monitoring started for region \(region)")}
         //request the regions initial state
@@ -220,8 +210,7 @@ extension AppDelegate{
     //CoreLocation locationManager didFailWithError callback
     
     open func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        if debug{print("Location Manager did fail")}
-        //delegate?.errorMessage?(1, errorDesc: "Monitoring Failed for region: \(error)")
+        if debug{print("Location Manager did fail to start")}
     }
     
     //CoreLocation locationManager monitoringDidFailForRegion callback
@@ -231,14 +220,12 @@ extension AppDelegate{
     }
     
     //CoreLocation locationManager rangingDidFailForRegion callback
-    
     open func locationManager(_ manager: CLLocationManager, rangingBeaconsDidFailFor region: CLBeaconRegion, withError error: Error) {
         if debug{print("Ranging failed for region /(region)")}
         
     }
     
     //CoreLocation locationManager didEnterRegion callback
-    
     open func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if debug{print("Entered region")}
         locationManager.startRangingBeacons(in: region as! CLBeaconRegion)
@@ -248,7 +235,6 @@ extension AppDelegate{
     
     
     //CoreLocation locationManager didExitRegion callback
-    
     open func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
         if debug{print("Exited region")}
         locationManager.stopRangingBeacons(in: region as! CLBeaconRegion)
@@ -290,7 +276,6 @@ extension AppDelegate{
         
         let errorLen = errorMessage.characters.count
         
-        
         if errorLen > 0 {
             if debug{print("Error:" + errorMessage)}
         }
@@ -322,17 +307,10 @@ extension AppDelegate{
         case CLAuthorizationStatus.authorizedAlways:
             locationStatus = "Allowed to location Access"
             shouldIAllow = true
-            /* case CLAuthorizationStatus.AuthorizedAlways:
-             locationStatus = "Allowed to Always Access Location"
-             shouldIAllow = true*/
         case CLAuthorizationStatus.authorizedWhenInUse:
             locationStatus = "Allowed to Access Location When in Use"
             shouldIAllow = true
-            /*         default:
-             locationStatus = "Allowed to location Access"
-             shouldIAllow = true*/
         }
-        
         
         if (shouldIAllow == true) {
             if debug{print("Allowed Access: \(locationStatus)")}
