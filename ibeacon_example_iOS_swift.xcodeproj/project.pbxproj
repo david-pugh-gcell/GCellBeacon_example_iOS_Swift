@@ -12,6 +12,7 @@
 		4F3E82541EC1FA0100DF72D7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F3E82521EC1FA0100DF72D7 /* Main.storyboard */; };
 		4F3E82561EC1FA0100DF72D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F3E82551EC1FA0100DF72D7 /* Assets.xcassets */; };
 		4F3E82591EC1FA0100DF72D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F3E82571EC1FA0100DF72D7 /* LaunchScreen.storyboard */; };
+		4F3E82621EC1FA1900DF72D7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3E82611EC1FA1900DF72D7 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		4F3E82551EC1FA0100DF72D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F3E82581EC1FA0100DF72D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4F3E825A1EC1FA0100DF72D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F3E82611EC1FA1900DF72D7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F3E82621EC1FA1900DF72D7 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +43,7 @@
 			children = (
 				4F3E824D1EC1FA0100DF72D7 /* ibeacon_example_iOS_swift */,
 				4F3E824C1EC1FA0100DF72D7 /* Products */,
+				4F3E82601EC1FA1900DF72D7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,6 +66,14 @@
 				4F3E825A1EC1FA0100DF72D7 /* Info.plist */,
 			);
 			path = ibeacon_example_iOS_swift;
+			sourceTree = "<group>";
+		};
+		4F3E82601EC1FA1900DF72D7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4F3E82611EC1FA1900DF72D7 /* CoreLocation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,6 +281,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "gcell.com.ibeacon-example-iOS-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -282,6 +295,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "gcell.com.ibeacon-example-iOS-swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
