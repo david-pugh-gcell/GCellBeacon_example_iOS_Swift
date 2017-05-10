@@ -10,15 +10,18 @@
 /**
  
  Example of adding iBeacon monitoring to an app in Swift. 
+ Developed in XCode 8.3.2 using Swift 3 and tested on iPhone 6 running iOS10.3.1
  
- Before running the app ensire that:
+ Before running the app ensure that:
  
  1) The CoreLocation Framework has been added to the project https://developer.apple.com/reference/corelocation/cllocationmanager
- 2) An appropriate Location Usage description entry has been added to the plist, e.g., Privacy - Location Always Usage Description
+ 2) An appropriate Location Usage description entry has been added to the plist, e.g., Privacy - Location Always Usage Description for background monitoring
  
- Adding to the AppDelegate allows the app to monitor for beacon regions in the background. Ensure that class conforms to the CLLocationMangerDelegate protocol. Use a CLLocationManager instance to monitor for defined beacon regions. When iOS detects that the device has entered a defined region it will deliver a didEnterRegion callback. The app can then start to range beacons - this allows more information about the beacon to be discovered.
+ The example uses the recommended flow from Apple - Beacon Regions are monitored and when a didEnter call is recieved, the app strats to range beacons in that region to gain proximity data. When we leave the region ranging is stopped to save batteryand processing power. For a more detailled explanation please contact us at power@gcell.com www.ibeacon.solar
  
- When the app goes into the background ranging will stop. However, monitoring for regions will continue and didEnter and didExit region calls will still be made to the app. The documentation form Apple states:
+ Adding to the AppDelegate allows the app to respond to received beacon region events in the background. Ensure that class conforms to the CLLocationMangerDelegate protocol. Use a CLLocationManager instance to monitor for defined beacon regions. When iOS detects that the device has entered a defined region it will deliver a didEnterRegion callback. The app can then start to range beacons - this allows more information about the beacon to be discovered.
+ 
+ When the app goes into the background ranging will stop. However, monitoring for regions will continue if the Always Allow Location Services permission was granted, and didEnter and didExit region calls will still be made to the app. The documentation form Apple states:
 
 
  '''The region monitoring service delivers events normally while an app is running in the foreground or background. (You can use this service for both geographic and beacon regions.) For a terminated iOS app, this service relaunches the app to deliver events. Use of this service requires “Always” authorization from the user.
@@ -114,14 +117,20 @@ extension AppDelegate{
      [CoreLocation CLBeaconRegion]: https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLBeaconRegion_class/index.html#//apple_ref/occ/cl/CLBeaconRegion
      
      
-     This function starts scanning for nearby iBeacons with the regions defined in [beaconRegions]
+     This method starts monitoring for beacon regions defined in [beaconRegions]
      
      - Warning: Bluetooth Low Energy needs to be ON to search for iBeacons
      
      ### Usage:
-     Call to start scanning for iBeacons, The Beacon regions to scan can be set in anumber of ways:
+     Call to start monitoring for iBeacon Regions, The Beacon regions to scan can be set in anumber of ways:
      
-     * Create your own beacon regions for [CoreLocation CLBeaconRegion](https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLBeaconRegion_class/index.html) and add using beaconRegions.append(beaconRegion)
+     Create your own beacon regions for [CoreLocation CLBeaconRegion](https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLBeaconRegion_class/index.html) and add using beaconRegions.append(beaconRegion)
+     
+     It sets CLLocationManager to return data whenever the regions are entered and exited.
+     
+     notifyEntryStateOnDisplay is set to true to allow the state of the region to be determined when a user activites the device display, and to allow a few seconds of ranging when a region is entered whenin background mode.
+     
+     
      */
     
     open func startMonitoringForBeacons(){
@@ -139,13 +148,21 @@ extension AppDelegate{
             for b in beaconRegions{
                 b.notifyOnExit = true //Notify when we enter and exit so we can control ranging
                 b.notifyOnEntry = true
-                b.notifyEntryStateOnDisplay = true //This causes the app to range for a few seconds in teh background when a region is entered and iOS wakes the app
+                b.notifyEntryStateOnDisplay = true //This causes the app to range for a few seconds in the background when a region is entered and iOS wakes the app
                 locationManager.startMonitoring(for: b)
             }
         }
         monitoringCalled = true
     }
     
+    /**
+     
+     This function stops monitoring for a defined Beacon Region
+
+     ## Usage:
+     Call to stop monitoring and ranging for iBeacon Regions.
+     */
+
     open func stopMonitoringForBeacons(){
         if debug{print("Entered Stop Monitoring method")}
         
@@ -243,9 +260,11 @@ extension AppDelegate{
     
     //MARK: CoreBluetooth and Location Services Status callbacks
     
-    //This function checks the Location settings on the device, feeds back an error if off or not supported
-    //Error call back through errorMessage
-    //See https://developer.apple.com/reference/corelocation/cllocationmanager#1669513 for reference
+    /**
+     This function checks the Location settings on the device, feeds back an error if off or not supported
+    Error call back through errorMessage
+    See https://developer.apple.com/reference/corelocation/cllocationmanager#1669513 for reference
+     */
     
     
     internal func checkDeviceBLSettings() -> Bool {
@@ -284,7 +303,7 @@ extension AppDelegate{
     }
     
     
-    /*
+    /**
      This function checks the Location Services Authorsation status
      
      - Warning:
