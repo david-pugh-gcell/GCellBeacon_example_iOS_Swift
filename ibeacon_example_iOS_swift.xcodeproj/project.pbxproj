@@ -13,6 +13,7 @@
 		4F3E82561EC1FA0100DF72D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F3E82551EC1FA0100DF72D7 /* Assets.xcassets */; };
 		4F3E82591EC1FA0100DF72D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F3E82571EC1FA0100DF72D7 /* LaunchScreen.storyboard */; };
 		4F3E82621EC1FA1900DF72D7 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3E82611EC1FA1900DF72D7 /* CoreLocation.framework */; };
+		4FADFFDA1EC49B2500FAC85E /* CLBeaconRegionExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FADFFD91EC49B2500FAC85E /* CLBeaconRegionExt.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		4F3E82581EC1FA0100DF72D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4F3E825A1EC1FA0100DF72D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4F3E82611EC1FA1900DF72D7 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		4FADFFD91EC49B2500FAC85E /* CLBeaconRegionExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CLBeaconRegionExt.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				4F3E824E1EC1FA0100DF72D7 /* AppDelegate.swift */,
+				4FADFFD91EC49B2500FAC85E /* CLBeaconRegionExt.swift */,
 				4F3E82501EC1FA0100DF72D7 /* ViewController.swift */,
 				4F3E82521EC1FA0100DF72D7 /* Main.storyboard */,
 				4F3E82551EC1FA0100DF72D7 /* Assets.xcassets */,
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F3E82511EC1FA0100DF72D7 /* ViewController.swift in Sources */,
+				4FADFFDA1EC49B2500FAC85E /* CLBeaconRegionExt.swift in Sources */,
 				4F3E824F1EC1FA0100DF72D7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

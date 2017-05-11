@@ -17,7 +17,7 @@
  1) The CoreLocation Framework has been added to the project https://developer.apple.com/reference/corelocation/cllocationmanager
  2) An appropriate Location Usage description entry has been added to the plist, e.g., Privacy - Location Always Usage Description for background monitoring
  
- The example uses the recommended flow from Apple - Beacon Regions are monitored and when a didEnter call is recieved, the app strats to range beacons in that region to gain proximity data. When we leave the region ranging is stopped to save batteryand processing power. For a more detailled explanation please contact us at power@gcell.com www.ibeacon.solar
+ The example uses the recommended flow from Apple - Beacon Regions are monitored and when a boundary crossing event is recieved, the app strats to range beacons in that region to gain proximity data. When we leave the region ranging is stopped to save battery and processing power. For a more detailled explaination please contact us at power@gcell.com www.ibeacon.solar
  
  Adding to the AppDelegate allows the app to respond to received beacon region events in the background. Ensure that class conforms to the CLLocationMangerDelegate protocol. Use a CLLocationManager instance to monitor for defined beacon regions. When iOS detects that the device has entered a defined region it will deliver a didEnterRegion callback. The app can then start to range beacons - this allows more information about the beacon to be discovered.
  
@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
      An array of [CoreLocation CLBeaconRegion] objects that the app will scan for. You can either supply an array to this parameter directly or add individual regions using [addBeaconRegion].
      
      */
-    var beaconRegions: [CLBeaconRegion] = []
+    var beaconRegions = Set<CLBeaconRegion>()               //Create a set of beacon Regions to monitor.
     
     var changeStateOnce: Bool = false                       //ensure we have received permission to use locn services before restarting scans
     public var monitoringCalled: Bool = false               //flag recording if monitoring for beacons has been called
@@ -69,13 +69,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         locationManager.delegate = self
         
         
-        //Set up beacon region to monitor
+        //Set up beacon region to you want the app to monitor
         let proxUuid = UUID(uuidString: gCellDefaultUuid)
+        //Each different region must have a different identifier
         let beaconRegion1 = CLBeaconRegion(proximityUUID: proxUuid!, identifier: "region1")
-        beaconRegions.append(beaconRegion1)
+        // Add to the set of beacon regions
+        beaconRegions.insert(beaconRegion1)
 
-        //Start monitoring for beacons
-        startMonitoringForBeacons()
+        //Start monitoring for these beacon regions
+        startMonitoringForBeaconRegions()
         
         return true
     }
@@ -88,12 +90,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        if debug{ print("App has entered background. Ranging will stop and iOS will now only notify the app when entering a region")}
+        if debug{ print("App has entered background. Ranging will stop and iOS Region Monitoring Service will take over. If the 'Always' location permission has been granted then iOS will wake the app and notify the app when entering or exiting a registered region. If notifyEntryStateOnDisplay is set true for a region, iOS will wake the app and notify it if the device is in that region and the user turns on the display.  ")}
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        if debug{ print("App is about to enter foreground. Ranging will now recommence.")}
+        if debug{ print("App is about to enter foreground. Normal Monitoring and Ranging will now recommence.")}
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -117,7 +119,7 @@ extension AppDelegate{
      [CoreLocation CLBeaconRegion]: https://developer.apple.com/library/ios/documentation/CoreLocation/Reference/CLBeaconRegion_class/index.html#//apple_ref/occ/cl/CLBeaconRegion
      
      
-     This method starts monitoring for beacon regions defined in [beaconRegions]
+     This method starts monitoring for beacon regions defined in the beaconRegions set. Each region is set to notify the app on enter, on exit and if the user turns on the display.
      
      - Warning: Bluetooth Low Energy needs to be ON to search for iBeacons
      
@@ -133,10 +135,8 @@ extension AppDelegate{
      
      */
     
-    open func startMonitoringForBeacons(){
-        if debug{print("Entered Start Monitoring method")}
-        
-        
+    open func startMonitoringForBeaconRegions(){
+  
         //Check the BLE location settings - we do this at the point of use as recommneded in https://developer.apple.com/reference/corelocation/cllocationmanager#1669513
         if checkDeviceBLSettings() == true{
             if beaconRegions.count == 0{
@@ -148,7 +148,8 @@ extension AppDelegate{
             for b in beaconRegions{
                 b.notifyOnExit = true //Notify when we enter and exit so we can control ranging
                 b.notifyOnEntry = true
-                b.notifyEntryStateOnDisplay = true //This causes the app to range for a few seconds in the background when a region is entered and iOS wakes the app
+                b.notifyEntryStateOnDisplay = true //This causes notifications when the user turns on the display and the device is already inside the region. 
+                                                    //It also causes the app to range for a few seconds in the background when a region is entered and iOS wakes the app
                 locationManager.startMonitoring(for: b)
             }
         }
@@ -157,14 +158,13 @@ extension AppDelegate{
     
     /**
      
-     This function stops monitoring for a defined Beacon Region
+     This function stops ranging and monitoring for a set of defined Beacon Regions
 
      ## Usage:
      Call to stop monitoring and ranging for iBeacon Regions.
      */
 
-    open func stopMonitoringForBeacons(){
-        if debug{print("Entered Stop Monitoring method")}
+    open func stopMonitoringForBeaconRegions(){
         
         //for each supplied region, stop relevant notificatiions and stop monitoring
         for b in beaconRegions{
@@ -191,7 +191,7 @@ extension AppDelegate{
         
         //Optionally sort beacons by RSSI
         //let beacons = beacons.sorted(by: {$0.rssi > $1.rssi})
-        if debug{print("\(beacons.count) Beacons(s) ranged")}
+        if debug{print("\(beacons.count) Beacons(s) ranged \(Date())")}
         if(beacons.count > 0) {
             for b in beacons{
                 print("\(b.major) \(b.minor) \(b.rssi) \(b)")
@@ -202,15 +202,15 @@ extension AppDelegate{
     
     
     //CoreLocation locationManager didDetermineState callback
+    //This is called when a device enters or exits a region and in response to a requestState method call
     open func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
-        if debug{print("Determined State of region \(region)")}
         // the app has determined if it is within a region on start up - if it is then start to range
         if state == CLRegionState.inside{
-            if debug{print("Inside region")}
+            if debug{print("Determined State of \(region) - Inside this region")}
                 locationManager.startRangingBeacons(in: region as! CLBeaconRegion )
  
         }else{
-            if debug{print("Outside region")}
+            if debug{print("Determined State of \(region) - Outside region")}
             locationManager.stopRangingBeacons(in: region as! CLBeaconRegion)
         }
         
@@ -219,7 +219,10 @@ extension AppDelegate{
     //CoreLocation locationManager didStartMonitoringForRegion callback
     open func locationManager(_ manager: CLLocationManager, didStartMonitoringFor region: CLRegion) {
         if debug{print("Monitoring started for region \(region)")}
-        //request the regions initial state
+        //Request the regions initial state - we need to do this as if the app is started and the user is already the region we wont get a Boundary Crossing call.
+        //As a result we wont start ranging. notifyEntryStateOnDisplay = true does not overcome this senario.
+        //To overcome this initial issue, we request the status of the region once it is successfully registered for monitoring.
+        //Data is returned to ther didDetermineState method
         locationManager.requestState(for: region)
         
     }
@@ -227,25 +230,26 @@ extension AppDelegate{
     //CoreLocation locationManager didFailWithError callback
     
     open func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        if debug{print("Location Manager did fail to start")}
+        NSLog("Location Manager did fail to start with Error:  \(error)")
     }
     
     //CoreLocation locationManager monitoringDidFailForRegion callback
     open func locationManager(_ manager: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        if debug{print("Monitoring failed")}
+        NSLog("Monitoring failed for region \(String(describing: region))")
         
     }
     
     //CoreLocation locationManager rangingDidFailForRegion callback
     open func locationManager(_ manager: CLLocationManager, rangingBeaconsDidFailFor region: CLBeaconRegion, withError error: Error) {
-        if debug{print("Ranging failed for region /(region)")}
+        NSLog("Ranging failed for region \(region)")
         
     }
     
     //CoreLocation locationManager didEnterRegion callback
     open func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if debug{print("Entered region")}
-        locationManager.startRangingBeacons(in: region as! CLBeaconRegion)
+        if debug{print("Entered region \(region)")}
+        //You could start ranging here, but didDetermineState is also called so no need to call twice
+        //locationManager.startRangingBeacons(in: region as! CLBeaconRegion)
     }
     
     
@@ -253,8 +257,9 @@ extension AppDelegate{
     
     //CoreLocation locationManager didExitRegion callback
     open func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        if debug{print("Exited region")}
-        locationManager.stopRangingBeacons(in: region as! CLBeaconRegion)
+        if debug{print("Exited region \(region)")}
+        //You could stop ranging here, but didDetermineState is also called so no need to call twice
+        //locationManager.stopRangingBeacons(in: region as! CLBeaconRegion)
     }
     
     
@@ -336,7 +341,7 @@ extension AppDelegate{
             
             // Start location services
             if monitoringCalled && changeStateOnce{
-                startMonitoringForBeacons()
+                startMonitoringForBeaconRegions()
             }
         } else {
             if debug{print("Denied access: \(locationStatus)")}
@@ -346,7 +351,32 @@ extension AppDelegate{
         changeStateOnce = true
     }
     
-   
+    //MARK Listing Existing monitored and ranged regions from CoreLocation
+    
+    /**
+     Prints the set of shared regions monitored by all location manager objects
+     ## Usage
+     This can be used to see what regions are already registered, to avoid adding again.
+     Storing your regions of interest in a set means you can used standard set functionality to efficiently 
+     identify any new regions to add. if you add a region a second time the old region is replaced by the new one.
+     */
+    func listMonitoredRegions(){
+        for monitoredRegion in self.locationManager.monitoredRegions as! Set<CLBeaconRegion> {
+            print("Monitoring: " + monitoredRegion.strDescription)
+        }
+    }
+    
+    /**
+     Get a list of the regions currently being ranged by CoreLocation on iOS
+     */
+    func listRangedRegions(){
+        for rangedRegion in self.locationManager.rangedRegions as! Set<CLBeaconRegion> {
+            print("Ranging: " + rangedRegion.strDescription)
+        }
+    }
+
     
 }
+
+
 
